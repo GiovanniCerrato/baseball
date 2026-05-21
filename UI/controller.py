@@ -45,8 +45,18 @@ class Controller:
 
 
     def handlePercorso(self, e):
-        pass
-
+        if self._squadraSelezionata is None:
+            self._view._txt_result.clean()
+            self._view._txt_result.controls.append(ft.Text(f"Selezionare una squadra!", color="red"))
+            self._view.update_page()
+            return
+        path,score = self._model.getPathV2(self._squadraSelezionata)
+        self._view._txt_result.clean()
+        self._view._txt_result.controls.append(ft.Text(f"Trovata soluzione lunga {len(path)} con somma pesi archi pari a {score}"))
+        for i in range(0,len(path)-1):
+            self._view._txt_result.controls.append(ft.Text(f"{path[i]} -> {path[i+1]} con peso: {path[i].salarioTotale + path[i+1].salarioTotale} "))
+        self._view.update_page()
+        return
     def fillDdAnno(self):
         anni = self._model.getAnni()
         for a in anni:
@@ -58,6 +68,7 @@ class Controller:
     def _handleAnnoSelezionato(self, e):
         self._squadraSelezionata = None
         self._annoSelezionato = e.control.key
+
         squadreAnno = self._model.getSquadreAnno(self._annoSelezionato)
         self._view._txtOutSquadre.clean()
         self._view._txt_result.clean()
@@ -67,7 +78,8 @@ class Controller:
             self._view._ddSquadra.options.append(ft.dropdown.Option(key=s.teamCode,
                                                                     data=s,
                                                                     on_click = self._handleSquadraSelezionata))
-
+        self._view._ddSquadra.value = None
+        self._squadraSelezionata = None
         self._view.update_page()
         return
 
