@@ -29,6 +29,13 @@ class Controller:
             self._view._txt_result.controls.append(ft.Text(f"Selezionare una squadra!", color="red"))
             self._view.update_page()
             return
+
+        if not self._model.esisteGrafo():
+            self._view._txt_result.clean()
+            self._view._txt_result.controls.append(ft.Text(f"Creare un grafo!", color="red"))
+            self._view.update_page()
+            return
+
         dettagli = self._model.getDettagliGrafo(self._squadraSelezionata)
 
         self._view._txt_result.clean()
@@ -50,6 +57,12 @@ class Controller:
             self._view._txt_result.controls.append(ft.Text(f"Selezionare una squadra!", color="red"))
             self._view.update_page()
             return
+        if not self._model.esisteGrafo():
+            self._view._txt_result.clean()
+            self._view._txt_result.controls.append(ft.Text(f"Creare un grafo!", color="red"))
+            self._view.update_page()
+            return
+
         path,score = self._model.getPathV2(self._squadraSelezionata)
         self._view._txt_result.clean()
         self._view._txt_result.controls.append(ft.Text(f"Trovata soluzione lunga {len(path)} con somma pesi archi pari a {score}"))
@@ -68,6 +81,7 @@ class Controller:
     def _handleAnnoSelezionato(self, e):
         self._squadraSelezionata = None
         self._annoSelezionato = e.control.key
+        self._model.svuotaGrafo()
 
         squadreAnno = self._model.getSquadreAnno(self._annoSelezionato)
         self._view._txtOutSquadre.clean()

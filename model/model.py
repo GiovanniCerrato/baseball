@@ -57,6 +57,7 @@ class Model:
                 parziale.pop()
 
     def _ricorsioneV2(self, parziale):
+        print(parziale)
         # 1 condizione di ottimalità, verifico se la parziale è migliore del best
         if self._score(parziale) > self._bestObjVal:
             self._bestPath = copy.deepcopy(parziale)
@@ -80,6 +81,10 @@ class Model:
                 self._ricorsioneV2(parziale)
                 parziale.pop()
                 return
+
+
+
+
 
     def _score(self,parziale):
         score = 0
@@ -128,4 +133,13 @@ class Model:
 
     def getRandomNode(self):
         return self._idMapTeams['LAN']
+
+    def svuotaGrafo(self):
+        self._graph.clear()
+        return print("Grafo svuotato!")
+
+    def esisteGrafo(self):
+        if len(self._graph.nodes) == 0:
+            return False
+        return True
 
